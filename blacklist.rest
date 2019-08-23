@@ -1,0 +1,30 @@
+POST http://127.0.0.1:3000/users/5d5e59affc20062b8c12cd7d/blacklists
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNWU1OWFmZmMyMDA2MmI4YzEyY2Q3ZCIsImlhdCI6MTU2NjQ2NDQ1MywiZXhwIjoxNTY2NDY4MDUzfQ.DDO3qOnxY5YLlwNbqujngaxOhMXWKmpzcvHV8MhhB7o
+content-type: application/json
+
+{
+    "number": "01036241234"
+}
+
+###
+
+GET http://127.0.0.1:3000/users/5d5e59affc20062b8c12cd7d/blacklists/5d5e5ceeab4f230aa8f4eb75
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNWU1OWFmZmMyMDA2MmI4YzEyY2Q3ZCIsImlhdCI6MTU2NjQ2NDQ1MywiZXhwIjoxNTY2NDY4MDUzfQ.DDO3qOnxY5YLlwNbqujngaxOhMXWKmpzcvHV8MhhB7o
+content-type: application/json
+
+###
+
+PUT http://127.0.0.1:3000/users/5d5e59affc20062b8c12cd7d/blacklists/5d5e5ceeab4f230aa8f4eb75
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNWU1OWFmZmMyMDA2MmI4YzEyY2Q3ZCIsImlhdCI6MTU2NjQ2NDQ1MywiZXhwIjoxNTY2NDY4MDUzfQ.DDO3qOnxY5YLlwNbqujngaxOhMXWKmpzcvHV8MhhB7o
+content-type: application/json
+
+{
+    "number": "2123456789"
+}
+
+###
+
+DELETE http://127.0.0.1:3000/users/5d5e59affc20062b8c12cd7d/blacklists/5d5e5ceeab4f230aa8f4eb75
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNWU1OWFmZmMyMDA2MmI4YzEyY2Q3ZCIsImlhdCI6MTU2NjQ2NDQ1MywiZXhwIjoxNTY2NDY4MDUzfQ.DDO3qOnxY5YLlwNbqujngaxOhMXWKmpzcvHV8MhhB7o
+content-type: application/json
+

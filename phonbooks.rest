@@ -1,0 +1,49 @@
+GET http://127.0.0.1:3000/users/5d5e59affc20062b8c12cd7d/phonebooks HTTP/1.1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNWU1OWFmZmMyMDA2MmI4YzEyY2Q3ZCIsImlhdCI6MTU2NjQ2NDQ1MywiZXhwIjoxNTY2NDY4MDUzfQ.DDO3qOnxY5YLlwNbqujngaxOhMXWKmpzcvHV8MhhB7o
+content-type: application/json
+
+###
+POST http://127.0.0.1:3000/users/5d5e59affc20062b8c12cd7d/phonebooks HTTP/1.1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNWU1OWFmZmMyMDA2MmI4YzEyY2Q3ZCIsImlhdCI6MTU2NjQ2NDQ1MywiZXhwIjoxNTY2NDY4MDUzfQ.DDO3qOnxY5YLlwNbqujngaxOhMXWKmpzcvHV8MhhB7o
+content-type: application/json
+
+{
+    "name": "Mr. Kim",
+    "number": "01055556666",
+    "relation": "Boss",
+    "email": "Kimsuper@gmail.com",
+    "address": "Gwangju, Korea",
+    "comment": "run away.."
+}
+
+###
+POST http://127.0.0.1:3000/users/5d5e59affc20062b8c12cd7d/phonebooks/searches HTTP/1.1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNWU1OWFmZmMyMDA2MmI4YzEyY2Q3ZCIsImlhdCI6MTU2NjQ2NDQ1MywiZXhwIjoxNTY2NDY4MDUzfQ.DDO3qOnxY5YLlwNbqujngaxOhMXWKmpzcvHV8MhhB7o
+content-type: application/json
+
+{
+    "name": "Kim"
+}
+
+###
+GET http://127.0.0.1:3000/users/5d5e59affc20062b8c12cd7d/phonebooks/5d5e5c8aab4f230aa8f4eb74 HTTP/1.1
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNWU1OWFmZmMyMDA2MmI4YzEyY2Q3ZCIsImlhdCI6MTU2NjQ2NDQ1MywiZXhwIjoxNTY2NDY4MDUzfQ.DDO3qOnxY5YLlwNbqujngaxOhMXWKmpzcvHV8MhhB7o
+
+###
+
+PUT http://127.0.0.1:3000/users/5d5e59affc20062b8c12cd7d/phonebooks/5d5e5c8aab4f230aa8f4eb74 HTTP/1.1
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNWEyMjA4ZGZlZDYzMjU2Yzg1ZTU0OCIsImlhdCI6MTU2NjE4ODA0NiwiZXhwIjoxNTY2MTkxNjQ2fQ.cAkuZxzYqE51foSwk8d10QFuRYGJjFg4n-pZVBc2NPQ
+
+{
+    "email": "wjrldsy52@naver.com",
+    "relation": "Lover",
+    "comment": "forever"
+}
+
+###
+DELETE http://127.0.0.1:3000/users/5d5e59affc20062b8c12cd7d/phonebooks/5d5e5c8aab4f230aa8f4eb74 HTTP/1.1
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNWU1OWFmZmMyMDA2MmI4YzEyY2Q3ZCIsImlhdCI6MTU2NjQ2NDQ1MywiZXhwIjoxNTY2NDY4MDUzfQ.DDO3qOnxY5YLlwNbqujngaxOhMXWKmpzcvHV8MhhB7o
+

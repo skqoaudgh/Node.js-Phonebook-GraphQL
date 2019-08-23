@@ -1,0 +1,51 @@
+
+### Auth
+POST http://127.0.0.1:3000/auth HTTP/1.1
+content-type: application/json
+
+{
+    "id": "skqo",
+    "password": "asd123"
+}
+
+### Create
+POST http://127.0.0.1:3000/users HTTP/1.1
+content-type: application/json
+
+{
+    "id": "skqo",
+    "password": "asd123",
+    "nickname": "asdasd",
+    "comment": "Hello world!"
+}
+
+### Show all users
+GET http://127.0.0.1:3000/users HTTP/1.1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNWU1OWFmZmMyMDA2MmI4YzEyY2Q3ZCIsImlhdCI6MTU2NjQ2NDQ1MywiZXhwIjoxNTY2NDY4MDUzfQ.DDO3qOnxY5YLlwNbqujngaxOhMXWKmpzcvHV8MhhB7o
+content-type: application/json
+
+### Show a user
+GET http://127.0.0.1:3000/users/5d5e59affc20062b8c12cd7d HTTP/1.1
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNWU1OWFmZmMyMDA2MmI4YzEyY2Q3ZCIsImlhdCI6MTU2NjQ2NDQ1MywiZXhwIjoxNTY2NDY4MDUzfQ.DDO3qOnxY5YLlwNbqujngaxOhMXWKmpzcvHV8MhhB7o
+
+{
+    "id": "skqoaudgh",
+    "password": "asd123"
+}
+
+### Update User
+PUT http://127.0.0.1:3000/users/5d5e59affc20062b8c12cd7d HTTP/1.1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNWU1OWFmZmMyMDA2MmI4YzEyY2Q3ZCIsImlhdCI6MTU2NjQ2NDQ1MywiZXhwIjoxNTY2NDY4MDUzfQ.DDO3qOnxY5YLlwNbqujngaxOhMXWKmpzcvHV8MhhB7o
+content-type: application/json
+
+
+{
+    "nickname2": "CadaWorld2"
+}
+
+### Delete User
+DELETE http://127.0.0.1:3000/users/5d5e59affc20062b8c12cd7d HTTP/1.1
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNWU1OWFmZmMyMDA2MmI4YzEyY2Q3ZCIsImlhdCI6MTU2NjQ2NDQ1MywiZXhwIjoxNTY2NDY4MDUzfQ.DDO3qOnxY5YLlwNbqujngaxOhMXWKmpzcvHV8MhhB7o
+
