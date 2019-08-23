@@ -1,12 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const logger = require('morgan');
+const graphqlHTTP = require('express-graphql');
 const compression = require('compression');
 
 const Auth = require('./middleware/auth');
 
-const userRouter = require('./routes/user');
-const authRouter = require('./routes/auth');
+const schema = require('./graphql/schema/index');
+const resolver = require('./graphql/resolver/index');
 
 const app = express();
 
@@ -20,8 +21,11 @@ app.use('/favicon.ico', (req, res, next) => {
 });
 
 app.use(Auth);
-app.use('/auth', authRouter);
-app.use('/users', userRouter);
+app.use('/graphql', graphqlHTTP({
+    schema: schema,
+    rootValue: resolver,
+    graphiql: true
+}));
 app.get('/', (req, res ,next) => {
     res.send('Hello World!');
 });
