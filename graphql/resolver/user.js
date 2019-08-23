@@ -1,169 +1,107 @@
-const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 const User = require('../../models/user');
+const { errorName } = require('../schema/error');
 
 module.exports = {
 
-    createUser: async (req, res, next) => {
+    createUser: async (args) => {
         try {
-            if(!req.body.id || !req.body.password || !req.body.id.trim() || !req.body.password.trim() || !req.body.nickname) {
-                return res.status(400).json({error: {
-                    "status": 400,
-                    "error": 'InvalidJsonNodeValue',
-                    "message": 'The value provided for the JSON nodes in the request body was not in the correct format.'
-                }});
+            if(!args.userInput.id || !args.userInput.password || !args.userInput.id.trim() || !args.userInput.password.trim() || !args.userInput.nickname) {
+                throw new Error(errorName.INVALID_ACCOUNT_INPUT);
             }
 
-            const searchedUser = await User.find({$or: [{ID: req.body.id}, {Nickname: req.body.nickname}]});
+            const searchedUser = await User.find({$or: [{ID: args.userInput.id}, {Nickname: args.userInput.nickname}]});
             if(searchedUser && searchedUser.length > 0) {
-                return res.status(409).json({error: {
-                    "status": 409,
-                    "error": 'AccountAlreadyExists',
-                    "message": 'The specified account or nickname already exists.'
-                }});
+                throw new Error(errorName.CONFLICT_ACCOUNT);
             }
 
-            const hashedPassword = await bcrypt.hashSync(req.body.password);
+            const hashedPassword = await bcrypt.hashSync(args.userInput.password);
             const inputUser = new User({
-                ID: req.body.id.trim(),
+                ID: args.userInput.id.trim(),
                 Password: hashedPassword,
-                Nickname: req.body.nickname,
-                Comment: req.body.comment
+                Nickname: args.userInput.nickname,
+                Comment: args.userInput.comment
             });
             const savedUser = await inputUser.save();
-            res.status(201).json(savedUser);
+            return {...savedUser._doc, Password: null, _id:savedUser.id};
         }
         catch(err) {
-            console.error(err);
-            res.status(500).json({error: {
-                "status": 500,
-                "error": 'InternalError',
-                "message": 'The server encountered an internal error. Please retry the request.'
-            }}); 
+            throw err.message;
         }
     },
 
-    getUsers: async (req, res, next) => {
+    users: async () => {
         try {
             const users = await User.find().select('-Password');
-            if(!users) {
-                return res.status(404).json({error: {
-                    "status": 404,
-                    "error": 'UserNotFound',
-                    "message": 'The user does not exist.'
-                }});
+            if(users.length == 0) {
+                throw new Error(errorName.NOT_FOUND_ACCOUNT);
             }
 
-            res.status(200).json(users);
+            return users;
         }
         catch(err) {
-            console.error(err);     
-            res.status(500).json({error: {
-                "status": 500,
-                "error": 'InternalError',
-                "message": 'The server encountered an internal error. Please retry the request.'
-            }}); 
+            throw err.message;
         }
     },
 
-    getUser: async (req, res, next) => {
+    user: async (args, req) => {
         try {
-            const user = await User.findById(req.params.userId).select('-Password');
+            const user = await User.findById(req.userId).select('-Password');
             if(!user) {
-                return res.status(404).json({error: {
-                    "status": 404,
-                    "error": 'UserNotFound',
-                    "message": 'The user does not exist.'
-                }});
+                throw new Error(errorName.NOT_FOUND_ACCOUNT);
             }
 
-            res.status(200).json(user);
+            return user;
         }
         catch(err) {
-            console.error(err);     
-            return res.status(500).json({error: {
-                "status": 500,
-                "error": 'InternalError',
-                "message": 'The server encountered an internal error. Please retry the request.'
-            }});            
+            throw err.message;
         }
     },
 
-    updateUser: async (req, res, next) => {
+    updateUser: async (args, req) => {
         try {
-            const user = await User.findById(req.params.userId);
+            const user = await User.findById(req.userId);
             if(!user) {
-                return res.status(404).json({error: {
-                    "status": 404,
-                    "error": 'UserNotFound',
-                    "message": 'The user does not exist.'
-                }});
+                throw new Error(errorName.NOT_FOUND_ACCOUNT);
             }
 
             const searchedUser = await User.find({
                 $and: [
-                    { $or: [{ID: req.body.id}, {Nickname: req.body.nickname}] },
+                    { $or: [{ID: args.userInput.id}, {Nickname: args.userInput.nickname}] },
                     { _id: {$ne: user._id} }
                 ]});
             if(searchedUser.length > 0) {
-                return res.status(409).json({error: {
-                    "status": 409,
-                    "error": 'AccountAlreadyExists',
-                    "message": 'The specified account or nickname already exists.'
-                }});
+                throw new Error(errorName.CONFLICT_ACCOUNT);
             }
 
-            const hashedPassword = await bcrypt.hashSync(req.body.password);
-            if(req.body.password && req.body.password.trim())
+            const hashedPassword = await bcrypt.hashSync(args.userInput.password);
+            if(args.userInput.password && args.userInput.password.trim())
                 user.Password = hashedPassword;
-            if(req.body.nickname)
-                user.Nickname = req.body.nickname;
-            if(req.body.comment)
-                user.Comment = req.body.comment;
+            if(args.userInput.nickname)
+                user.Nickname = args.userInput.nickname;
+            if(args.userInput.comment)
+                user.Comment = args.userInput.comment;
 
-            try {
-                const updatedUser = await user.save();
-                res.status(200).json(updatedUser);
-            }
-            catch(err) {
-                console.error(err);
-                res.status(500).json({error: {
-                    "status": 500,
-                    "error": 'InternalError',
-                    "message": 'The server encountered an internal error. Please retry the request.'
-                }});                  
-            }
+
+            const updatedUser = await user.save();
+            return updatedUser;
         }
         catch(err) {
-            console.error(err);
-            res.status(500).json({error: {
-                "status": 500,
-                "error": 'InternalError',
-                "message": 'The server encountered an internal error. Please retry the request.'
-            }}); 
+            throw err.message;
         }
     },
 
-    deleteUser: async (req, res, next) => {
+    deleteUser: async (args, req) => {
         try {
-            const deletedUser = await User.findOneAndDelete({_id: req.params.userId}).select('-Password');
+            const deletedUser = await User.findOneAndDelete({_id: req.userId}).select('-Password');
             if(!deletedUser) {
-                return res.status(404).json({error: {
-                    "status": 404,
-                    "error": 'UserNotFound',
-                    "message": 'The user does not exist.'
-                }});
+                throw new Error(errorName.NOT_FOUND_ACCOUNT);
             }
 
-            res.status(404).json(deletedUser);
+            return deletedUser;
         }
         catch(err) {
-            console.error(err);
-            res.status(500).json({error: {
-                "status": 500,
-                "error": 'InternalError',
-                "message": 'The server encountered an internal error. Please retry the request.'
-            }});        
+            throw err.message;       
         }
     }
 }

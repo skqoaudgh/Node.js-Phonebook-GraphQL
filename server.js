@@ -6,8 +6,12 @@ const compression = require('compression');
 
 const Auth = require('./middleware/auth');
 
-const schema = require('./graphql/schema/index');
-const resolver = require('./graphql/resolver/index');
+const graphQlSchema = require('./graphql/schema/index');
+const graphQlResolvers = require('./graphql/resolver/index');
+const { errorType } = require('./graphql/schema/error');
+const getErrorCode = errorName => {
+    return errorType[errorName];
+}
 
 const app = express();
 
@@ -21,11 +25,18 @@ app.use('/favicon.ico', (req, res, next) => {
 });
 
 app.use(Auth);
-app.use('/graphql', graphqlHTTP({
-    schema: schema,
-    rootValue: resolver,
-    graphiql: true
-}));
+app.use('/graphql', (req, res) => {
+    graphqlHTTP({
+        schema: graphQlSchema,
+        rootValue: graphQlResolvers,
+        graphiql: true,
+        customFormatErrorFn: (err) => {
+            let errorMessage = err.message.replace('Unexpected error value: ', '');
+            errorMessage = errorMessage.replace(/"/gi, '');
+            return getErrorCode(errorMessage);
+        }
+    })(req, res)
+});
 app.get('/', (req, res ,next) => {
     res.send('Hello World!');
 });
