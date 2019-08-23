@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Blacklist = require('../models/blacklist');
+const Blacklist = require('../../models/blacklist');
 
 module.exports = {
     createBlacklist: async (req, res, next) => {

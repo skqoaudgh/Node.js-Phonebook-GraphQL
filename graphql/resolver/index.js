@@ -1,3 +1,11 @@
+const authResolver = require('./auth');
+const userResolver = require('./user');
+const phonebookResolver = require('./phonebook');
+const blacklistResolver = require('./blacklist');
+
 module.exports = {
-    hello: () => 'Hello World!' 
+    ...authResolver,
+    ...userResolver,
+    ...phonebookResolver,
+    ...blacklistResolver
 }

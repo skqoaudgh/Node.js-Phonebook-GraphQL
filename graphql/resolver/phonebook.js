@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Phonebook = require('../models/phonebook');
+const Phonebook = require('../../models/phonebook');
 
 function ValidateEmail(mail) 
 {
