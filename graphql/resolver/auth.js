@@ -6,7 +6,7 @@ module.exports = {
     loginUser: async (req, res, next) => {
         try {
             if(!req.body.id || !req.body.password || !req.body.id.trim() || !req.body.password.trim()) {
-                throw new Error(errorName.INVALID_ACCOUNT_INPUT);
+                throw new Error(errorName.INVALID_JSON_INPUT);
             }
 
             const id = req.body.id;
@@ -29,7 +29,7 @@ module.exports = {
                 res.status(200).json({token: token});
         }
         catch(err) {
-            throw err;          
+            throw err.message;         
         }
     }
 }

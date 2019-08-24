@@ -7,7 +7,7 @@ module.exports = {
     createUser: async (args) => {
         try {
             if(!args.userInput.id || !args.userInput.password || !args.userInput.id.trim() || !args.userInput.password.trim() || !args.userInput.nickname) {
-                throw new Error(errorName.INVALID_ACCOUNT_INPUT);
+                throw new Error(errorName.INVALID_JSON_INPUT);
             }
 
             const searchedUser = await User.find({$or: [{ID: args.userInput.id}, {Nickname: args.userInput.nickname}]});
