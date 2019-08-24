@@ -3,7 +3,8 @@ exports.errorName = {
     CONFLICT_ACCOUNT: 'CONFLICT_ACCOUNT',
     INVALID_JSON_INPUT: 'INVALID_JSON_INPUT',
     UNAUTHRIZED: 'UNAUTHRIZED',
-    NOT_FOUND_ITEM: 'NOT_FOUND_ITEM'
+    NOT_FOUND_ITEM: 'NOT_FOUND_ITEM',
+    CONFLICT_NUMBER: 'CONFLICT_NUMBER'
 }
 
 exports.errorType = {
@@ -17,6 +18,10 @@ exports.errorType = {
     },
     CONFLICT_ACCOUNT: {
         message: 'The specified account or nickname already exists',
+        statusCode: 409
+    },
+    CONFLICT_NUMBER: {
+        message: 'The specified number already exists',
         statusCode: 409
     },
     INVALID_JSON_INPUT: {
