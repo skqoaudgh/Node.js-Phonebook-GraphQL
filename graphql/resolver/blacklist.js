@@ -5,6 +5,9 @@ const { errorName } = require('../schema/error');
 
 module.exports = {
     createBlacklist: async (args, req) => {
+        if(!req.isAuth) {
+            throw new Error(errorName.UNAUTHRIZED);
+        }
         try {
             if(!args.number) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
@@ -28,6 +31,9 @@ module.exports = {
     },
 
     blacklists: async (args, req) => {
+        if(!req.isAuth) {
+            throw new Error(errorName.UNAUTHRIZED);
+        }
         try {
             const blacklists = await Blacklist.find({Creator: req.id});
             if(!blacklists || blacklists.length == 0) {
@@ -42,6 +48,9 @@ module.exports = {
     },
 
     blacklist: async (args, req) => {
+        if(!req.isAuth) {
+            throw new Error(errorName.UNAUTHRIZED);
+        }
         try {
             const itemId = args.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
@@ -61,6 +70,9 @@ module.exports = {
     },
 
     updateBlacklist: async (req, res, nexdt) => {
+        if(!req.isAuth) {
+            throw new Error(errorName.UNAUTHRIZED);
+        }
         try {
             const itemId = args.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
@@ -89,6 +101,9 @@ module.exports = {
     },
 
     deleteBlacklist: async (args, req) => {
+        if(!req.isAuth) {
+            throw new Error(errorName.UNAUTHRIZED);
+        }
         try {
             const itemId = args.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {

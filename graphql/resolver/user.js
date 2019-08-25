@@ -31,6 +31,9 @@ module.exports = {
     },
 
     users: async () => {
+        if(!req.isAuth) {
+            throw new Error(errorName.UNAUTHRIZED);
+        }
         try {
             const users = await User.find().select('-Password');
             if(users.length == 0) {
@@ -45,6 +48,9 @@ module.exports = {
     },
 
     user: async (args, req) => {
+        if(!req.isAuth) {
+            throw new Error(errorName.UNAUTHRIZED);
+        }
         try {
             const user = await User.findById(args.userId).select('-Password');
             if(!user) {
@@ -59,6 +65,9 @@ module.exports = {
     },
 
     updateUser: async (args, req) => {
+        if(!req.isAuth) {
+            throw new Error(errorName.UNAUTHRIZED);
+        }
         try {
             const user = await User.findById(req.id);
             if(!user) {
@@ -92,6 +101,9 @@ module.exports = {
     },
 
     deleteUser: async (args, req) => {
+        if(!req.isAuth) {
+            throw new Error(errorName.UNAUTHRIZED);
+        }
         try {
             const deletedUser = await User.findOneAndDelete({_id: req.id}).select('-Password');
             if(!deletedUser) {

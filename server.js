@@ -5,7 +5,6 @@ const graphqlHTTP = require('express-graphql');
 const compression = require('compression');
 
 const Auth = require('./middleware/auth');
-const isAuth = require('./middleware/isAuth');
 
 const graphQlSchema = require('./graphql/schema/index');
 const graphQlResolvers = require('./graphql/resolver/index');
@@ -26,7 +25,7 @@ app.use('/favicon.ico', (req, res, next) => {
 });
 
 app.use(Auth);
-app.use('/graphql', isAuth, (req, res) => {
+app.use('/graphql', (req, res) => {
     graphqlHTTP({
         schema: graphQlSchema,
         rootValue: graphQlResolvers,

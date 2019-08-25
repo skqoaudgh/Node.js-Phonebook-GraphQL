@@ -12,6 +12,9 @@ function ValidateEmail(mail)
 
 module.exports = {
     createPhonebook: async (args, req) => {
+        if(!req.isAuth) {
+            throw new Error(errorName.UNAUTHRIZED);
+        }
         try {
             if(!args.phonebookInput.name || !args.phonebookInput.number || !args.phonebookInput.name.trim() || !args.phonebookInput.number.trim()) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
@@ -51,6 +54,9 @@ module.exports = {
     },
 
     phonebooks: async (args, req) => {
+        if(!req.isAuth) {
+            throw new Error(errorName.UNAUTHRIZED);
+        }
         try {
             const phonebooks = await Phonebook.find({Creator: req.id});
             if(!phonebooks || phonebooks.length == 0) {
@@ -65,6 +71,9 @@ module.exports = {
     },
 
     phonebook: async (args, req) => {
+        if(!req.isAuth) {
+            throw new Error(errorName.UNAUTHRIZED);
+        }
         try {
             const itemId = args.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
@@ -84,6 +93,9 @@ module.exports = {
     },
 
     updatePhonebook: async (req, res, nexdt) => {
+        if(!req.isAuth) {
+            throw new Error(errorName.UNAUTHRIZED);
+        }
         try {
             const itemId = args.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
@@ -115,6 +127,9 @@ module.exports = {
     },
 
     deletePhonebook: async (args, req) => {
+        if(!req.isAuth) {
+            throw new Error(errorName.UNAUTHRIZED);
+        }
         try {
             const itemId = args.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
@@ -134,6 +149,9 @@ module.exports = {
     },
 
     searchPhonebook: async (args, req) => {
+        if(!req.isAuth) {
+            throw new Error(errorName.UNAUTHRIZED);
+        }
         try {
             if(!args.phonebookSearchInput.name && !args.phonebookSearchInput.number && !args.phonebookSearchInput.group) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
