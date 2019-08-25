@@ -105,10 +105,16 @@ You can check it out [here](https://github.com/skqoaudgh/Node.js-Phonebook-RestA
   ```
   
 * **Mutation**
-  `createUser(userInput: UserInput!): User! // Creates new user data on database, and returns json data about the saved user.<br />`
-  `updateUser(userInput: UserInput!): User! // Updates user data, and returns json data about the updated user.<br />`
-  `deleteUser: User! // Deletes user data, and returns json data about the deleted user.'
-  
+  ```javascript
+  // Creates new user data on database, and returns json data about the saved user.<br />
+  createUser(userInput: UserInput!): User!
+
+  // Updates user data, and returns json data about the updated user.
+  updateUser(userInput: UserInput!): User!
+
+  // Deletes user data, and returns json data about the deleted user.
+  deleteUser: User! 
+  ``` 
 * **Mutation Sample**
   ```javascript
   mutation {
