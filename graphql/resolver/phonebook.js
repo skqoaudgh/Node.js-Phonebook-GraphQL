@@ -34,7 +34,7 @@ module.exports = {
             }
 
             const inputPhonebook = new Phonebook({
-                Creator: req.userId,
+                Creator: req.id,
                 Name: args.phonebookInput.name,
                 Number: args.phonebookInput.number.trim(),
                 Group: args.phonebookInput.group?(args.phonebookInput.group):'None',
@@ -52,7 +52,7 @@ module.exports = {
 
     phonebooks: async (args, req) => {
         try {
-            const phonebooks = await Phonebook.find({Creator: req.userId});
+            const phonebooks = await Phonebook.find({Creator: req.id});
             if(!phonebooks || phonebooks.length == 0) {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }
@@ -66,12 +66,12 @@ module.exports = {
 
     phonebook: async (args, req) => {
         try {
-            const itemId = req.itemId;
+            const itemId = args.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
 
-            const phonebook = await Phonebook.findOne({_id: itemId, Creator: req.userId});
+            const phonebook = await Phonebook.findOne({_id: itemId, Creator: req.id});
             if(!phonebook) {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }
@@ -85,12 +85,12 @@ module.exports = {
 
     updatePhonebook: async (req, res, nexdt) => {
         try {
-            const itemId = req.itemId;
+            const itemId = args.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
 
-            const phonebook = await Phonebook.findOne({_id: itemId, Creator: req.userId});
+            const phonebook = await Phonebook.findOne({_id: itemId, Creator: req.id});
             if(!phonebook) {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }
@@ -116,12 +116,12 @@ module.exports = {
 
     deletePhonebook: async (args, req) => {
         try {
-            const itemId = req.itemId;
+            const itemId = args.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
 
-            const deletedPhonebook = await Phonebook.findOneAndDelete({_id: itemId, Creator: req.userId});
+            const deletedPhonebook = await Phonebook.findOneAndDelete({_id: itemId, Creator: req.id});
             if(!deletedPhonebook) {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }
@@ -151,7 +151,7 @@ module.exports = {
                 {Name: {"$regex": nameReg}},
                 {Number: {"$regex": numberReg}},
                 {Group: {"$regex": groupReg}},
-                {Creator: req.userId}
+                {Creator: req.id}
             ]});
             
             return phonebooks;

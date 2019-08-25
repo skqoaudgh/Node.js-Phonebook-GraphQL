@@ -46,7 +46,7 @@ module.exports = {
 
     user: async (args, req) => {
         try {
-            const user = await User.findById(req.userId).select('-Password');
+            const user = await User.findById(args.userId).select('-Password');
             if(!user) {
                 throw new Error(errorName.NOT_FOUND_ACCOUNT);
             }
@@ -60,7 +60,7 @@ module.exports = {
 
     updateUser: async (args, req) => {
         try {
-            const user = await User.findById(req.userId);
+            const user = await User.findById(req.id);
             if(!user) {
                 throw new Error(errorName.NOT_FOUND_ACCOUNT);
             }
@@ -93,7 +93,7 @@ module.exports = {
 
     deleteUser: async (args, req) => {
         try {
-            const deletedUser = await User.findOneAndDelete({_id: req.userId}).select('-Password');
+            const deletedUser = await User.findOneAndDelete({_id: req.id}).select('-Password');
             if(!deletedUser) {
                 throw new Error(errorName.NOT_FOUND_ACCOUNT);
             }
@@ -101,7 +101,7 @@ module.exports = {
             return deletedUser;
         }
         catch(err) {
-            throw err.message;       
+            throw err.message;
         }
     }
 }

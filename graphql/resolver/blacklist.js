@@ -4,20 +4,20 @@ const Blacklist = require('../../models/blacklist');
 const { errorName } = require('../schema/error');
 
 module.exports = {
-    createBlacklist: async (req, res, next) => {
+    createBlacklist: async (args, req) => {
         try {
-            if(!args.blacklistInput.number) {
+            if(!args.number) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
     
-            const checkOverLap = await Blacklist.find({Creator: req.userId, Number: args.blacklistInput.number});
+            const checkOverLap = await Blacklist.find({Creator: req.id, Number: args.number});
             if(checkOverLap && checkOverLap.length > 0) {
                 throw new Error(errorName.CONFLICT_NUMBER);
             }
 
             const inputBlacklist = new Blacklist({
-                Creator: req.userId,
-                Number: args.blacklistInput.number.trim()
+                Creator: req.id,
+                Number: args.number.trim()
             });
             const savedBlacklist = await inputBlacklist.save();
             return savedBlacklist;        
@@ -27,9 +27,9 @@ module.exports = {
         }
     },
 
-    blacklists: async (req, res, next) => {
+    blacklists: async (args, req) => {
         try {
-            const blacklists = await Blacklist.find({Creator: req.userId});
+            const blacklists = await Blacklist.find({Creator: req.id});
             if(!blacklists || blacklists.length == 0) {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }
@@ -41,14 +41,14 @@ module.exports = {
         }
     },
 
-    blacklist: async (req, res, next) => {
+    blacklist: async (args, req) => {
         try {
-            const itemId = req.itemId;
+            const itemId = args.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
 
-            const blacklist = await Blacklist.findOne({_id: itemId, Creator: req.userId});
+            const blacklist = await Blacklist.findOne({_id: itemId, Creator: req.id});
             if(!blacklist) {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }
@@ -62,18 +62,18 @@ module.exports = {
 
     updateBlacklist: async (req, res, nexdt) => {
         try {
-            const itemId = req.itemId;
+            const itemId = args.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
 
-            const blacklist = await Blacklist.findOne({_id: itemId, Creator: req.userId});
+            const blacklist = await Blacklist.findOne({_id: itemId, Creator: req.id});
             if(!blacklist) {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }
 
-            if(args.blacklistInput.number && args.blacklistInput.number.trim())
-                blacklist.Number = args.blacklistInput.number.trim();
+            if(args.number && args.number.trim())
+                blacklist.Number = args.number.trim();
             
             try {
                 const updatedBlacklist = await blacklist.save();
@@ -88,14 +88,14 @@ module.exports = {
         }
     },
 
-    deleteBlacklist: async (req, res, next) => {
+    deleteBlacklist: async (args, req) => {
         try {
-            const itemId = req.itemId;
+            const itemId = args.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
 
-            const deletedBlacklist = await Blacklist.findOneAndDelete({_id: itemId, Creator: req.userId});
+            const deletedBlacklist = await Blacklist.findOneAndDelete({_id: itemId, Creator: req.id});
             if(!deletedBlacklist) {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }

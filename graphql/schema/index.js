@@ -62,13 +62,13 @@ module.exports = buildSchema(`
 
     type RootQuery {
         users: [User!]!
-        user: User!
+        user(userId: ID!): User!
         login(loginInput: LoginInput!): Token!
         phonebooks: [Phonebook!]!
-        phonebook: Phonebook!
+        phonebook(itemId: ID!): Phonebook!
         searchPhonebook(phonebookSearchInput: PhonebookSearchInput!): [Phonebook]!
         blacklists: [Blacklist!]!
-        blacklist: Blacklist!
+        blacklist(itemId: ID!): Blacklist!
     }
 
     type RootMutation {
@@ -76,11 +76,11 @@ module.exports = buildSchema(`
         updateUser(userInput: UserInput!): User!
         deleteUser: User!
         createPhonebook(phonebookInput: PhonebookInput!): Phonebook!
-        updatePhonebook(phonebookInput: PhonebookInput!): Phonebook!
-        deletePhonebook: Phonebook!
-        createBlacklist(blacklistInput: BlacklistInput!): Blacklist!
-        updateBlacklist(blacklistInput: BlacklistInput!): Blacklist!
-        deleteBlacklist: Blacklist!
+        updatePhonebook(itemId: ID!, phonebookInput: PhonebookInput!): Phonebook!
+        deletePhonebook(itemId: ID!): Phonebook!
+        createBlacklist(number: String!): Blacklist!
+        updateBlacklist(itemId: ID!, number: String!): Blacklist!
+        deleteBlacklist(itemId: ID!): Blacklist!
     }
 
     schema {
