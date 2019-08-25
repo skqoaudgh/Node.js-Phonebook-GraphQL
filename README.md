@@ -7,28 +7,28 @@ You can check it out [here](https://github.com/skqoaudgh/Node.js-Phonebook-RestA
 ## Table of Contents
 * Overview(#overview)
 * [Auth](#auth)
-* User
+* [User](#user)
   * Query
-    * [Show User](#show-user)
+    * Show User
   * Mutation
-    1. [Create User](#create-user)
-    2. [Update User](#update-user)
-    3. [Delete User](#delete-user)
-* Phonebook
+    * Create User
+    * Update User
+    * Delete User
+* [Phonebook](#phonebook)
   * Query
-    1. [Show Phonebook](#show-phonebook)
-    2. [Search Phonebook](#search-phonebook)
+    * Show Phonebook
+    * Search Phonebook
   * Mutation
-    1. [Create Phonebook Item](#create-phonebook-item)
-    2. [Update Phonebook Item](#update-phonebook-item)
-    3. [Delete Phonebook Item](#delete-phonebook-item)
-* Blacklist
+    * Create Phonebook Item
+    * Update Phonebook Item
+    * Delete Phonebook Item
+* [Blacklist](#blacklist)
   * Query
-    * [Show Blacklist](#show-blacklist)
+    * Show Blacklist]
   * Mutation
-    1. [Create Blacklist Item](#create-blacklist-item)
-    2. [Update Blacklist Item](#update-blacklist-item)
-    3. [Delete Blacklist Item](#delete-blacklist-item)
+    * Create Blacklist Item
+    * Update Blacklist Item
+    * Delete Blacklist Item
 
 ## Overview
 1. There is one endpoint, that is ```/graphql```
