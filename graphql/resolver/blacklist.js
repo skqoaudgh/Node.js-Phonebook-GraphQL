@@ -1,48 +1,49 @@
 const mongoose = require('mongoose');
 
 const Blacklist = require('../../models/blacklist');
+const { errorName } = require('../schema/error');
 
 module.exports = {
     createBlacklist: async (req, res, next) => {
         try {
-            if(!req.body.number) {
+            if(!args.blacklistInput.number) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
     
-            const checkOverLap = await Blacklist.find({Creator: req.userId, Number: req.body.number});
+            const checkOverLap = await Blacklist.find({Creator: req.userId, Number: args.blacklistInput.number});
             if(checkOverLap && checkOverLap.length > 0) {
                 throw new Error(errorName.CONFLICT_NUMBER);
             }
 
             const inputBlacklist = new Blacklist({
                 Creator: req.userId,
-                Number: req.body.number.trim()
+                Number: args.blacklistInput.number.trim()
             });
             const savedBlacklist = await inputBlacklist.save();
-            res.status(201).json(savedBlacklist);         
+            return savedBlacklist;        
         }
         catch(err) {
             throw err.message;            
         }
     },
 
-    getBlacklists: async (req, res, next) => {
+    blacklists: async (req, res, next) => {
         try {
             const blacklists = await Blacklist.find({Creator: req.userId});
             if(!blacklists || blacklists.length == 0) {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }
 
-            res.status(200).json(blacklists);    
+            return blacklists;
         }
         catch(err) {
             throw err.message;               
         }
     },
 
-    getBlacklist: async (req, res, next) => {
+    blacklist: async (req, res, next) => {
         try {
-            const itemId = req.params.itemId;
+            const itemId = req.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
@@ -52,7 +53,7 @@ module.exports = {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }
 
-            res.status(200).json(blacklist);          
+            return blacklist;     
         }
         catch(err) {
             throw err.message;                  
@@ -61,7 +62,7 @@ module.exports = {
 
     updateBlacklist: async (req, res, nexdt) => {
         try {
-            const itemId = req.params.itemId;
+            const itemId = req.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
@@ -71,12 +72,12 @@ module.exports = {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }
 
-            if(req.body.number && req.body.number.trim())
-                blacklist.Number = req.body.number.trim();
+            if(args.blacklistInput.number && args.blacklistInput.number.trim())
+                blacklist.Number = args.blacklistInput.number.trim();
             
             try {
                 const updatedBlacklist = await blacklist.save();
-                res.status(200).json(updatedBlacklist);
+                return updatedBlacklist;
             }
             catch(err) {
                 throw err.message;                      
@@ -89,7 +90,7 @@ module.exports = {
 
     deleteBlacklist: async (req, res, next) => {
         try {
-            const itemId = req.params.itemId;
+            const itemId = req.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
@@ -99,7 +100,7 @@ module.exports = {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }
 
-            res.status(200).json(deletedBlacklist);     
+            return deletedBlacklist;   
         }
         catch(err) {
             throw err.message;

@@ -1,16 +1,17 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt-nodejs');
 const User = require('../../models/user');
+const { errorName } = require('../schema/error');
 
 module.exports = {
-    loginUser: async (req, res, next) => {
+    login: async (args, req) => {
         try {
-            if(!req.body.id || !req.body.password || !req.body.id.trim() || !req.body.password.trim()) {
+            if(!args.loginInput.id || !args.loginInput.password || !args.loginInput.id.trim() || !args.loginInput.password.trim()) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
 
-            const id = req.body.id;
-            const pw = req.body.password;
+            const id = args.loginInput.id;
+            const pw = args.loginInput.password;
             const user = await User.findOne({ID: id});
             if(!user) {
                 throw new Error(errorName.NOT_FOUND_ACCOUNT);
@@ -26,7 +27,7 @@ module.exports = {
             'BaeMyunghoCadaWord',{
                 expiresIn: '1h'
             });
-                res.status(200).json({token: token});
+            return {token: token};
         }
         catch(err) {
             throw err.message;         

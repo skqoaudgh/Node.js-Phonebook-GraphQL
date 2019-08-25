@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Phonebook = require('../../models/phonebook');
+const { errorName } = require('../schema/error');
 
 function ValidateEmail(mail) 
 {
@@ -10,62 +11,62 @@ function ValidateEmail(mail)
 }
 
 module.exports = {
-    createItem: async (req, res, next) => {
+    createPhonebook: async (args, req) => {
         try {
-            if(!req.body.name || !req.body.number || !req.body.name.trim() || !req.body.number.trim()) {
+            if(!args.phonebookInput.name || !args.phonebookInput.number || !args.phonebookInput.name.trim() || !args.phonebookInput.number.trim()) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
 
-            if(req.body.group) {
-                req.body.group = req.body.group.trim();
+            if(args.phonebookInput.group) {
+                args.phonebookInput.group = args.phonebookInput.group.trim();
             }
 
-            if(req.body.email) {
-                req.body.email = req.body.email.trim();
+            if(args.phonebookInput.email) {
+                args.phonebookInput.email = args.phonebookInput.email.trim();
             }
 
-            if(req.body.comment) {
-                req.body.comment = req.body.comment.trim();
+            if(args.phonebookInput.comment) {
+                args.phonebookInput.comment = args.phonebookInput.comment.trim();
             }
  
-            if(req.body.address) {
-                req.body.address = req.body.address.trim();
+            if(args.phonebookInput.address) {
+                args.phonebookInput.address = args.phonebookInput.address.trim();
             }
 
             const inputPhonebook = new Phonebook({
                 Creator: req.userId,
-                Name: req.body.name,
-                Number: req.body.number.trim(),
-                Group: req.body.group?(req.body.group):'None',
-                Email: req.body.email?(req.body.email):'None',
-                Address: req.body.address?(req.body.address):'None',
-                Comment: req.body.comment?(req.body.comment):'None',
+                Name: args.phonebookInput.name,
+                Number: args.phonebookInput.number.trim(),
+                Group: args.phonebookInput.group?(args.phonebookInput.group):'None',
+                Email: args.phonebookInput.email?(args.phonebookInput.email):'None',
+                Address: args.phonebookInput.address?(args.phonebookInput.address):'None',
+                Comment: args.phonebookInput.comment?(args.phonebookInput.comment):'None',
             });
             const savedPhonebook = await inputPhonebook.save();
-            res.status(201).json(savedPhonebook);    
+            return savedPhonebook;   
         }
         catch(err) {
             throw err.message;            
         }
     },
 
-    getPhonebooks: async (req, res, next) => {
+    phonebooks: async (args, req) => {
         try {
             const phonebooks = await Phonebook.find({Creator: req.userId});
             if(!phonebooks || phonebooks.length == 0) {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }
 
-            res.status(200).json(phonebooks); 
+            return phonebooks;
         }
         catch(err) {
             throw err.message;              
         }
     },
 
-    getPhonebook: async (req, res, next) => {
+    phonebook: async (args, req) => {
         try {
-            const itemId = req.params.itemId;
+            const itemId = req.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
@@ -75,7 +76,7 @@ module.exports = {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }
 
-            res.status(200).json(phonebook);          
+            return phonebook;       
         }
         catch(err) {
             throw err.message;             
@@ -84,7 +85,7 @@ module.exports = {
 
     updatePhonebook: async (req, res, nexdt) => {
         try {
-            const itemId = req.params.itemId;
+            const itemId = req.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
@@ -94,28 +95,28 @@ module.exports = {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }
 
-            if(req.body.name) 
-                phonebook.Name = req.body.name;
-            if(req.body.number && req.body.number.trim())
-                phonebook.Number = req.body.number.trim();
-            if(req.body.group)
-                phonebook.group = req.body.group;
-            if(req.body.email && req.body.email.trim())
-                phonebook.Email = req.body.email.trim();
-            if(req.body.comment)
-                phonebook.Comment = req.body.comment;
+            if(args.phonebookInput.name) 
+                phonebook.Name = args.phonebookInput.name;
+            if(args.phonebookInput.number && args.phonebookInput.number.trim())
+                phonebook.Number = args.phonebookInput.number.trim();
+            if(args.phonebookInput.group)
+                phonebook.group = args.phonebookInput.group;
+            if(args.phonebookInput.email && args.phonebookInput.email.trim())
+                phonebook.Email = args.phonebookInput.email.trim();
+            if(args.phonebookInput.comment)
+                phonebook.Comment = args.phonebookInput.comment;
             
             const updatedPhonebook = await phonebook.save();
-            res.status(200).json(updatedPhonebook);
+            return updatedPhonebook;
         }
         catch(err) {
             throw err.message;
         }
     },
 
-    deletePhonebook: async (req, res, next) => {
+    deletePhonebook: async (args, req) => {
         try {
-            const itemId = req.params.itemId;
+            const itemId = req.itemId;
             if(!mongoose.Types.ObjectId.isValid(itemId)) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
@@ -125,22 +126,22 @@ module.exports = {
                 throw new Error(errorName.NOT_FOUND_ITEM);
             }
 
-            res.status(200).json(deletedPhonebook);     
+            return deletedPhonebook;    
         }
         catch(err) {
             throw err.message;          
         }
     },
 
-    searchPhonebook: async (req, res, next) => {
+    searchPhonebook: async (args, req) => {
         try {
-            if(!req.body.name && !req.body.number && !req.body.group) {
+            if(!args.phonebookSearchInput.name && !args.phonebookSearchInput.number && !args.phonebookSearchInput.group) {
                 throw new Error(errorName.INVALID_JSON_INPUT);
             }
 
-            const name = req.body.name?req.body.name:'';
-            const number = req.body.number?req.body.number:'';
-            const group = req.body.group?req.body.group:'';
+            const name = args.phonebookSearchInput.name?args.phonebookSearchInput.name:'';
+            const number = args.phonebookSearchInput.number?args.phonebookSearchInput.number:'';
+            const group = args.phonebookSearchInput.group?args.phonebookSearchInput.group:'';
 
             const nameReg = new RegExp(name.replace(/\s+/g,"\\s+"), "gi");
             const numberReg = new RegExp(number.replace(/\s+/g,"\\s+"), "gi");
@@ -153,7 +154,7 @@ module.exports = {
                 {Creator: req.userId}
             ]});
             
-            res.status(200).json(phonebooks);
+            return phonebooks;
         }
         catch(err) {
             throw err.message;
