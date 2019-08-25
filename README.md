@@ -38,6 +38,7 @@ You can check it out [here](https://github.com/skqoaudgh/Node.js-Phonebook-RestA
 ## Auth
 
 * **Schema Definition**
+
   ```javascript
   type Token {
       token: String! // using jwt
@@ -50,9 +51,14 @@ You can check it out [here](https://github.com/skqoaudgh/Node.js-Phonebook-RestA
   ```
   
 * **Query**
-  `login(loginInput: LoginInput!): Token! // Returns auth token.` 
+
+  ```javascript
+  // Returns auth token.
+  login(loginInput: LoginInput!): Token! 
+  ```
   
 * **Sample**
+
   ```javascript
   query {
       login(loginInput: {id: "skqoaudgh", password: "asd123"}) {
@@ -64,6 +70,7 @@ You can check it out [here](https://github.com/skqoaudgh/Node.js-Phonebook-RestA
 ## User
 
 * **Schema Definition**
+
   ```javascript
   type User {
     _id: ID!
@@ -82,10 +89,17 @@ You can check it out [here](https://github.com/skqoaudgh/Node.js-Phonebook-RestA
   ```
   
 * **Query**
-  `users: [User!]! // Returns json data about users.<br />`
-  `user(userId: ID!): User! // Returns json data about a single user.`
+
+  ```javascript
+  // Returns json data about users.
+  users: [User!]! 
+  
+  // Returns json data about a single user.
+  user(userId: ID!): User!
+  ```
   
 * **Query Sample**
+
   ```javascript
   query {
     user(userId: "5d5f9d69b3b18c3fc86cbf69") {
@@ -105,6 +119,7 @@ You can check it out [here](https://github.com/skqoaudgh/Node.js-Phonebook-RestA
   ```
   
 * **Mutation**
+
   ```javascript
   // Creates new user data on database, and returns json data about the saved user.<br />
   createUser(userInput: UserInput!): User!
@@ -115,7 +130,9 @@ You can check it out [here](https://github.com/skqoaudgh/Node.js-Phonebook-RestA
   // Deletes user data, and returns json data about the deleted user.
   deleteUser: User! 
   ``` 
+  
 * **Mutation Sample**
+
   ```javascript
   mutation {
     createUser(userInput: {id: "TestAccount", password: "asd123", nickname: "TestAccount", comment: "hello~"}) {
