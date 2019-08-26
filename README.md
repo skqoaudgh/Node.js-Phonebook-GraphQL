@@ -121,7 +121,7 @@ You can check it out [here](https://github.com/skqoaudgh/Node.js-Phonebook-RestA
 * **Mutation**
 
   ```javascript
-  // Creates new user data on database, and returns json data about the saved user.<br />
+  // Creates new user data on database, and returns json data about the saved user.
   createUser(userInput: UserInput!): User!
 
   // Updates user data, and returns json data about the updated user.
@@ -158,6 +158,231 @@ You can check it out [here](https://github.com/skqoaudgh/Node.js-Phonebook-RestA
       ID
       Nickname
       Comment
+    }
+  }
+  ```
+
+## Phonebook
+
+* **Schema Definition**
+
+  ```javascript
+  type Phonebook {
+    _id: ID!
+    Creator: ID!
+    Name: String!
+    Number: String!
+    Group: String
+    Email: String
+    Address: String
+    Comment: String
+  }
+
+  input PhonebookInput {
+    name: String!
+    number: String!
+    group: String
+    email: String
+    address: String
+    comment: String  
+  }
+
+  input PhonebookSearchInput {
+    name: String
+    number: String
+    group: String        
+  }
+  ```
+  
+* **Query**
+
+  ```javascript
+  // Returns json data about all phonebook items.
+  phonebooks: [Phonebook!]!
+  
+  // Returns json data about a single phonebook item.
+  phonebook(itemId: ID!): Phonebook!
+  
+  // Returns json data about the searched item.
+  searchPhonebook(phonebookSearchInput: PhonebookSearchInput!): [Phonebook]!
+  ```
+  
+* **Query Sample**
+
+  ```javascript
+  query {
+    phonebooks {
+      _id
+      Creator
+      Name
+      Number
+      Group
+      Email
+      Address
+      Comment
+    }
+  }
+  
+  query {
+    phonebook(itemId: "5d54e90454a2bb11b4de107b") {
+      _id
+      Creator
+      Name
+      Number
+      Group
+      Email
+      Address
+      Comment
+    }
+  }
+  
+  query {
+    searchPhonebook(phonebookSearchInput: {name: "Kim", group: "Friends"}) {
+      _id
+      Creator
+      Name
+      Number
+      Group
+      Email
+      Address
+      Comment
+    }
+  }
+  ```
+  
+* **Mutation**
+
+  ```javascript
+  // Creates new phonebook item on database, and returns json data about the saved item.
+  createPhonebook(phonebookInput: PhonebookInput!): Phonebook!
+  
+  // Updates phonebook item data, and returns json data about the updated item.
+  updatePhonebook(itemId: ID!, phonebookInput: PhonebookInput!): Phonebook!
+  
+  // Deletes phonebook item data, and returns json data about the deleted item.
+  deletePhonebook(itemId: ID!): Phonebook!
+  ``` 
+  
+* **Mutation Sample**
+
+  ```javascript
+  mutation {
+    createPhonebook(phonebookInput: {name: "Kim", number: "01053882783", group: "friends", email: "bmh961@naver.com", address: "Seoul, Korea", comment: "BF"}) {
+      _id
+      Creator
+      Name
+      Number
+      Group
+      Email
+      Address
+      Comment
+    }
+  }
+  
+  mutation {
+    updatePhonebook(itemId: "5d54e90454a2bb11b4de107b", phonebookInput: { name: "Bae Myungho"}) {
+      _id
+      Creator
+      Name
+      Number
+      Group
+      Email
+      Address
+      Comment
+    }
+  }
+  
+  mutation {
+    deletePhonebook(itemId: "5d54e90454a2bb11b4de107b") {
+      _id
+      Creator
+      Name
+      Number
+      Group
+      Email
+      Address
+      Comment
+    }
+  }
+  ```
+  
+## Blacklist
+
+* **Schema Definition**
+
+  ```javascript
+  type Blacklist {
+    Creator: ID!
+    Number: String!
+  }
+
+  input BlacklistInput {
+    number: String!
+  }
+  ```
+  
+* **Query**
+
+  ```javascript
+  // Returns json data about all blacklist items.
+  blacklists: [Blacklist!]!
+  
+  // Returns json data about a single blacklist item.
+  blacklist(itemId: ID!): Blacklist!
+  ```
+  
+* **Query Sample**
+
+  ```javascript
+  query {
+    blacklists {
+      Creator
+      Number
+    }
+  }
+  
+  query {
+    blacklist(itemId: "5d5cd3285f0e3c06e8196c4f") {
+      Creator
+      Number
+    }
+  }
+  ```
+  
+* **Mutation**
+
+  ```javascript
+  // Creates new blacklist item on database, and returns json data about the saved item.
+  createBlacklist(number: String!): Blacklist!
+  
+  // Updates blacklist item data, and returns json data about the updated item.
+  updateBlacklist(itemId: ID!, number: String!): Blacklist!
+  
+  // Deletes blacklist item data, and returns json data about the deleted item.
+  deleteBlacklist(itemId: ID!): Blacklist!
+  ``` 
+  
+* **Mutation Sample**
+
+  ```javascript
+  mutation {
+    createBlacklist(number: "01036319954") {
+      Creator
+      Number
+    }
+  }
+  
+  mutation {
+    updateBlacklist(itemId: "01036319954", number: "01036310054") {
+      Creator
+      Number
+    }
+  }
+  
+  mutation {
+    deleteBlacklist(itemId: "01036310054") {
+      Creator
+      Number
     }
   }
   ```
