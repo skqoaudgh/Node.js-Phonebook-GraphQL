@@ -6,7 +6,7 @@ const { errorName } = require('../schema/error');
 module.exports = {
     createBlacklist: async (args, req) => {
         if(!req.isAuth) {
-            throw new Error(errorName.UNAUTHRIZED);
+            throw new Error(errorName.AUTHENTICATION_FAILED);
         }
         try {
             if(!args.number) {
@@ -32,7 +32,7 @@ module.exports = {
 
     blacklists: async (args, req) => {
         if(!req.isAuth) {
-            throw new Error(errorName.UNAUTHRIZED);
+            throw new Error(errorName.AUTHENTICATION_FAILED);
         }
         try {
             const blacklists = await Blacklist.find({Creator: req.id});
@@ -49,7 +49,7 @@ module.exports = {
 
     blacklist: async (args, req) => {
         if(!req.isAuth) {
-            throw new Error(errorName.UNAUTHRIZED);
+            throw new Error(errorName.AUTHENTICATION_FAILED);
         }
         try {
             const itemId = args.itemId;
@@ -71,7 +71,7 @@ module.exports = {
 
     updateBlacklist: async (req, res, nexdt) => {
         if(!req.isAuth) {
-            throw new Error(errorName.UNAUTHRIZED);
+            throw new Error(errorName.AUTHENTICATION_FAILED);
         }
         try {
             const itemId = args.itemId;
@@ -102,7 +102,7 @@ module.exports = {
 
     deleteBlacklist: async (args, req) => {
         if(!req.isAuth) {
-            throw new Error(errorName.UNAUTHRIZED);
+            throw new Error(errorName.AUTHENTICATION_FAILED);
         }
         try {
             const itemId = args.itemId;

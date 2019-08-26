@@ -30,16 +30,15 @@ module.exports = {
         }
     },
 
-    users: async () => {
+    users: async (args, req) => {
         if(!req.isAuth) {
-            throw new Error(errorName.UNAUTHRIZED);
+            throw new Error(errorName.AUTHENTICATION_FAILED);
         }
         try {
             const users = await User.find().select('-Password');
             if(users.length == 0) {
                 throw new Error(errorName.NOT_FOUND_ACCOUNT);
             }
-
             return users;
         }
         catch(err) {
@@ -49,7 +48,7 @@ module.exports = {
 
     user: async (args, req) => {
         if(!req.isAuth) {
-            throw new Error(errorName.UNAUTHRIZED);
+            throw new Error(errorName.AUTHENTICATION_FAILED);
         }
         try {
             const user = await User.findById(args.userId).select('-Password');
@@ -66,7 +65,7 @@ module.exports = {
 
     updateUser: async (args, req) => {
         if(!req.isAuth) {
-            throw new Error(errorName.UNAUTHRIZED);
+            throw new Error(errorName.AUTHENTICATION_FAILED);
         }
         try {
             const user = await User.findById(req.id);
@@ -102,7 +101,7 @@ module.exports = {
 
     deleteUser: async (args, req) => {
         if(!req.isAuth) {
-            throw new Error(errorName.UNAUTHRIZED);
+            throw new Error(errorName.AUTHENTICATION_FAILED);
         }
         try {
             const deletedUser = await User.findOneAndDelete({_id: req.id}).select('-Password');

@@ -13,7 +13,7 @@ function ValidateEmail(mail)
 module.exports = {
     createPhonebook: async (args, req) => {
         if(!req.isAuth) {
-            throw new Error(errorName.UNAUTHRIZED);
+            throw new Error(errorName.AUTHENTICATION_FAILED);
         }
         try {
             if(!args.phonebookInput.name || !args.phonebookInput.number || !args.phonebookInput.name.trim() || !args.phonebookInput.number.trim()) {
@@ -55,7 +55,7 @@ module.exports = {
 
     phonebooks: async (args, req) => {
         if(!req.isAuth) {
-            throw new Error(errorName.UNAUTHRIZED);
+            throw new Error(errorName.AUTHENTICATION_FAILED);
         }
         try {
             const phonebooks = await Phonebook.find({Creator: req.id});
@@ -72,7 +72,7 @@ module.exports = {
 
     phonebook: async (args, req) => {
         if(!req.isAuth) {
-            throw new Error(errorName.UNAUTHRIZED);
+           throw new Error(errorName.AUTHENTICATION_FAILED);
         }
         try {
             const itemId = args.itemId;
@@ -94,7 +94,7 @@ module.exports = {
 
     updatePhonebook: async (req, res, nexdt) => {
         if(!req.isAuth) {
-            throw new Error(errorName.UNAUTHRIZED);
+            throw new Error(errorName.AUTHENTICATION_FAILED);
         }
         try {
             const itemId = args.itemId;
@@ -128,7 +128,7 @@ module.exports = {
 
     deletePhonebook: async (args, req) => {
         if(!req.isAuth) {
-            throw new Error(errorName.UNAUTHRIZED);
+            throw new Error(errorName.AUTHENTICATION_FAILED);
         }
         try {
             const itemId = args.itemId;
@@ -150,7 +150,7 @@ module.exports = {
 
     searchPhonebook: async (args, req) => {
         if(!req.isAuth) {
-            throw new Error(errorName.UNAUTHRIZED);
+            throw new Error(errorName.AUTHENTICATION_FAILED);
         }
         try {
             if(!args.phonebookSearchInput.name && !args.phonebookSearchInput.number && !args.phonebookSearchInput.group) {
