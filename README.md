@@ -33,7 +33,7 @@ You can check it out [here](https://github.com/skqoaudgh/Node.js-Phonebook-RestA
 ## Overview
 1. There is one endpoint, that is ```/graphql```
 2. Authentication fail will throw error to express server, not graphqlhttp
-
+3. Authentication token must be included on header. (format: Authorization bearer <your token>)
 
 ## Auth
 
